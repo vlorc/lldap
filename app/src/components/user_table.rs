@@ -105,6 +105,7 @@ impl UserTable {
                       <tr>
                         <th>{"User ID"}</th>
                         <th>{"Email"}</th>
+                        <th>{"Mobile"}</th>
                         <th>{"Display name"}</th>
                         <th>{"First name"}</th>
                         <th>{"Last name"}</th>
@@ -130,6 +131,7 @@ impl UserTable {
           <tr key=user.id.clone()>
               <td><Link route=AppRoute::UserDetails(user.id.clone())>{&user.id}</Link></td>
               <td>{&user.email}</td>
+              <td>{&user.mobile}</td>
               <td>{&user.display_name}</td>
               <td>{&user.first_name}</td>
               <td>{&user.last_name}</td>

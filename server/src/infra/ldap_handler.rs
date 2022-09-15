@@ -171,6 +171,7 @@ fn get_user_attribute(
         "givenname" => vec![user.first_name.clone().into_bytes()],
         "sn" => vec![user.last_name.clone().into_bytes()],
         "jpegphoto" => vec![user.avatar.clone().into_bytes()],
+        "mobile" => vec![user.mobile.clone().into_bytes()],
         "memberof" => groups
             .into_iter()
             .flatten()
@@ -246,6 +247,7 @@ const ALL_USER_ATTRIBUTE_KEYS: &[&str] = &[
     "cn",
     "jpegPhoto",
     "createtimestamp",
+    "mobile",
 ];
 
 fn make_ldap_search_user_result_entry(
@@ -1473,6 +1475,7 @@ mod tests {
                         first_name: "Jim".to_string(),
                         last_name: "Cricket".to_string(),
                         avatar: JpegPhoto::for_tests(),
+                        mobile: "11223344550".to_string(),
                         uuid: uuid!("04ac75e0-2900-3e21-926c-2f732c26b3fc"),
                         creation_date: Utc.ymd(2014, 7, 8).and_hms(9, 10, 11),
                     },
@@ -1494,6 +1497,7 @@ mod tests {
                 "createTimestamp",
                 "entryUuid",
                 "jpegPhoto",
+                "mobile",
             ],
         );
         assert_eq!(
@@ -1584,6 +1588,10 @@ mod tests {
                         LdapPartialAttribute {
                             atype: "jpegPhoto".to_string(),
                             vals: vec![JpegPhoto::for_tests().into_bytes()]
+                        },
+                        LdapPartialAttribute {
+                            atype: "mobile".to_string(),
+                            vals: vec![b"11223344550".to_vec()]
                         },
                     ],
                 }),

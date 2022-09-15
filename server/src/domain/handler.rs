@@ -160,6 +160,7 @@ pub struct User {
     pub avatar: JpegPhoto,
     pub creation_date: chrono::DateTime<chrono::Utc>,
     pub uuid: Uuid,
+    pub mobile: String,
 }
 
 #[cfg(test)]
@@ -176,6 +177,7 @@ impl Default for User {
             avatar: JpegPhoto::default(),
             creation_date: epoch,
             uuid: Uuid::from_name_and_date("", &epoch),
+            mobile: String::new(),
         }
     }
 }
@@ -229,6 +231,7 @@ pub struct CreateUserRequest {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub avatar: Option<JpegPhoto>,
+    pub mobile: Option<String>,
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone, Default)]
@@ -240,6 +243,7 @@ pub struct UpdateUserRequest {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub avatar: Option<JpegPhoto>,
+    pub mobile: Option<String>,
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize, Clone)]

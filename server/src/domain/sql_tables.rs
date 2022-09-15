@@ -53,6 +53,7 @@ pub enum Users {
     TotpSecret,
     MfaType,
     Uuid,
+    Mobile,
 }
 
 #[derive(Iden)]
@@ -133,6 +134,7 @@ pub async fn init_table(pool: &Pool) -> sqlx::Result<()> {
             .col(ColumnDef::new(Users::TotpSecret).string_len(64))
             .col(ColumnDef::new(Users::MfaType).string_len(64))
             .col(ColumnDef::new(Users::Uuid).string_len(36).not_null())
+            .col(ColumnDef::new(Users::Mobile).string_len(16))
             .to_string(DbQueryBuilder {}),
     )
     .execute(pool)
@@ -287,6 +289,21 @@ pub async fn init_table(pool: &Pool) -> sqlx::Result<()> {
             .execute(pool)
             .await?;
         }
+    }
+
+    if !column_exists(pool, &*Users::Table.to_string(), &*Users::Mobile.to_string()).await? {
+        warn!("`mobile` column not found in `users`, creating it");
+        sqlx::query(
+            &Table::alter()
+                .table(Users::Table)
+                .add_column(
+                    ColumnDef::new(Users::Mobile)
+                        .string_len(16),
+                )
+                .to_string(DbQueryBuilder {}),
+        )
+            .execute(pool)
+            .await?;
     }
 
     sqlx::query(

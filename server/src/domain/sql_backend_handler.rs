@@ -127,6 +127,7 @@ impl BackendHandler for SqlBackendHandler {
                 .column(Users::FirstName)
                 .column(Users::LastName)
                 .column(Users::Avatar)
+                .column(Users::Mobile)
                 .column((Users::Table, Users::CreationDate))
                 .column((Users::Table, Users::Uuid))
                 .from(Users::Table)
@@ -297,6 +298,7 @@ impl BackendHandler for SqlBackendHandler {
             .column(Users::FirstName)
             .column(Users::LastName)
             .column(Users::Avatar)
+            .column(Users::Mobile)
             .column(Users::CreationDate)
             .column(Users::Uuid)
             .from(Users::Table)
@@ -368,6 +370,7 @@ impl BackendHandler for SqlBackendHandler {
             Users::FirstName,
             Users::LastName,
             Users::Avatar,
+            Users::Mobile,
             Users::CreationDate,
             Users::Uuid,
         ];
@@ -380,6 +383,7 @@ impl BackendHandler for SqlBackendHandler {
             request.first_name.unwrap_or_default().into(),
             request.last_name.unwrap_or_default().into(),
             request.avatar.unwrap_or_default().into(),
+            request.mobile.unwrap_or_default().into(),
             now.naive_utc().into(),
             uuid.into(),
         ];
@@ -413,6 +417,9 @@ impl BackendHandler for SqlBackendHandler {
         }
         if let Some(avatar) = request.avatar {
             values.push((Users::Avatar, avatar.into()));
+        }
+        if let Some(mobile) = request.mobile {
+            values.push((Users::Mobile, mobile.into()));
         }
         if values.is_empty() {
             return Ok(());

@@ -5,6 +5,7 @@ query ListUsersQuery($filters: RequestFilter) {
     displayName
     firstName
     lastName
+    mobile
     creationDate
   }
 }

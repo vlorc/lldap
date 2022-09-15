@@ -42,6 +42,7 @@ pub struct CreateUserModel {
     display_name: String,
     first_name: String,
     last_name: String,
+    mobile: String,
     #[validate(custom(
         function = "empty_or_long",
         message = "Password should be longer than 8 characters (or left empty)"
@@ -90,6 +91,7 @@ impl CommonComponent<CreateUserForm> for CreateUserForm {
                         displayName: to_option(model.display_name),
                         firstName: to_option(model.first_name),
                         lastName: to_option(model.last_name),
+                        mobile: to_option(model.mobile),
                         avatar: None,
                     },
                 };
@@ -291,6 +293,25 @@ impl Component for CreateUserForm {
                     oninput=self.common.callback(|_| Msg::Update) />
                   <div class="invalid-feedback">
                     {&self.form.field_message("last_name")}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mb-3">
+                <label for="last-name"
+                  class="form-label col-4 col-form-label">
+                  {"Mobile:"}
+                </label>
+                <div class="col-8">
+                  <Field
+                    form=&self.form
+                    autocomplete="family-name"
+                    class="form-control"
+                    class_invalid="is-invalid has-error"
+                    class_valid="has-success"
+                    field_name="mobile"
+                    oninput=self.common.callback(|_| Msg::Update) />
+                  <div class="invalid-feedback">
+                    {&self.form.field_message("mobile")}
                   </div>
                 </div>
               </div>

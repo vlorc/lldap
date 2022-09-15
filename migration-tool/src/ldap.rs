@@ -186,6 +186,7 @@ impl TryFrom<ResultEntry> for User {
             .and_then(|v| v.into_iter().next().filter(|s| !s.is_empty()));
         let password =
             get_optional_attribute("userPassword").or_else(|| get_optional_attribute("password"));
+        let mobile = get_optional_attribute("mobile");
         Ok(User::new(
             crate::lldap::CreateUserInput {
                 id,
@@ -193,6 +194,7 @@ impl TryFrom<ResultEntry> for User {
                 display_name,
                 first_name,
                 last_name,
+                mobile,
                 avatar: avatar.map(base64::encode),
             },
             password,

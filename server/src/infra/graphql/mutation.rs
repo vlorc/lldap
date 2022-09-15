@@ -32,6 +32,7 @@ pub struct CreateUserInput {
     last_name: Option<String>,
     // Base64 encoded JpegPhoto.
     avatar: Option<String>,
+    mobile: Option<String>,
 }
 
 #[derive(PartialEq, Eq, Debug, GraphQLInputObject)]
@@ -44,6 +45,7 @@ pub struct UpdateUserInput {
     last_name: Option<String>,
     // Base64 encoded JpegPhoto.
     avatar: Option<String>,
+    mobile: Option<String>,
 }
 
 #[derive(PartialEq, Eq, Debug, GraphQLInputObject)]
@@ -95,6 +97,7 @@ impl<Handler: BackendHandler + Sync> Mutation<Handler> {
                 display_name: user.display_name,
                 first_name: user.first_name,
                 last_name: user.last_name,
+                mobile: user.mobile,
                 avatar,
             })
             .instrument(span.clone())
@@ -157,6 +160,7 @@ impl<Handler: BackendHandler + Sync> Mutation<Handler> {
                 display_name: user.display_name,
                 first_name: user.first_name,
                 last_name: user.last_name,
+                mobile: user.mobile,
                 avatar,
             })
             .instrument(span)

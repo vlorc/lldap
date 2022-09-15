@@ -60,6 +60,7 @@ input CreateUserInput {
   displayName: String
   firstName: String
   lastName: String
+  mobile: String
   avatar: String
 }
 
@@ -69,6 +70,7 @@ type User {
   displayName: String!
   firstName: String!
   lastName: String!
+  mobile: String!
   avatar: String!
   creationDate: DateTimeUtc!
   uuid: String!
@@ -87,6 +89,7 @@ input UpdateUserInput {
   displayName: String
   firstName: String
   lastName: String
+  mobile: String
   avatar: String
 }
 

@@ -47,6 +47,7 @@ pub struct UserModel {
     display_name: String,
     first_name: String,
     last_name: String,
+    mobile: String,
 }
 
 /// The GraphQL query sent to the server to update the user details.
@@ -154,6 +155,7 @@ impl Component for UserDetailsForm {
             display_name: props.user.display_name.clone(),
             first_name: props.user.first_name.clone(),
             last_name: props.user.last_name.clone(),
+            mobile: props.user.mobile.clone(),
         };
         Self {
             common: CommonComponentParts::<Self>::create(props, link),
@@ -279,6 +281,23 @@ impl Component for UserDetailsForm {
                 </div>
               </div>
               <div class="form-group row mb-3">
+                <label for="mobile"
+                  class="form-label col-4 col-form-label">
+                  {"Mobile: "}
+                </label>
+                <div class="col-8">
+                  <Field
+                    class="form-control"
+                    form=&self.form
+                    field_name="mobile"
+                    autocomplete="family-name"
+                    oninput=self.common.callback(|_| Msg::Update) />
+                  <div class="invalid-feedback">
+                    {&self.form.field_message("mobile")}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mb-3">
                 <label for="creationDate"
                 class="form-label col-4 col-form-label">
                 {"Creation date: "}
@@ -344,6 +363,7 @@ impl UserDetailsForm {
             displayName: None,
             firstName: None,
             lastName: None,
+            mobile: None,
             avatar: None,
         };
         let default_user_input = user_input.clone();
@@ -360,6 +380,9 @@ impl UserDetailsForm {
         }
         if base_user.last_name != model.last_name {
             user_input.lastName = Some(model.last_name);
+        }
+        if base_user.mobile != model.mobile {
+            user_input.mobile = Some(model.mobile);
         }
         user_input.avatar = maybe_to_base64(&self.avatar)?;
         // Nothing changed.
@@ -387,6 +410,7 @@ impl UserDetailsForm {
                 self.common.user.display_name = model.display_name;
                 self.common.user.first_name = model.first_name;
                 self.common.user.last_name = model.last_name;
+                self.common.user.mobile = model.mobile;
                 if let Some(avatar) = maybe_to_base64(&self.avatar)? {
                     self.common.user.avatar = avatar;
                 }
