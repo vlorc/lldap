@@ -4,6 +4,7 @@ use lettre::{
     message::Mailbox, transport::smtp::authentication::Credentials, Message, SmtpTransport,
     Transport,
 };
+use lettre::transport::smtp::{Error, SmtpTransportBuilder};
 use tracing::debug;
 
 fn send_email(to: Mailbox, subject: &str, body: String, options: &MailOptions) -> Result<()> {
@@ -29,8 +30,11 @@ fn send_email(to: Mailbox, subject: &str, body: String, options: &MailOptions) -
     let relay_factory = match options.smtp_encryption {
         SmtpEncryption::TLS => SmtpTransport::relay,
         SmtpEncryption::STARTTLS => SmtpTransport::starttls_relay,
+        SmtpEncryption::NONE => |host: &str| -> Result<SmtpTransportBuilder, Error> {
+            Ok(SmtpTransport::builder_dangerous(host))
+        },
     };
-    let mailer = relay_factory(&options.server)?.credentials(creds).build();
+    let mailer = relay_factory(&options.server)?.port(options.port).credentials(creds).build();
     mailer.send(&email)?;
     Ok(())
 }
@@ -54,13 +58,13 @@ To reset your password please visit the following URL: {}/reset-password/step2/{
 Please contact an administrator if you did not initiate the process.",
         username, domain, token
     );
-    send_email(to, "[LLDAP] Password reset requested", body, options)
+    send_email(to, "[LDAP] Password reset requested", body, options)
 }
 
 pub fn send_test_email(to: Mailbox, options: &MailOptions) -> Result<()> {
     send_email(
         to,
-        "LLDAP test email",
+        "LDAP test email",
         "The test is successful! You can send emails from LLDAP".to_string(),
         options,
     )

@@ -108,6 +108,7 @@ clap::arg_enum! {
 pub enum SmtpEncryption {
     TLS,
     STARTTLS,
+    NONE,
 }
 }
 
